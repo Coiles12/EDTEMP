@@ -938,3 +938,11 @@ body {
     min-width: 300px;
   }
 }
+
+.nav-separator {
+  width: 2px;
+  background-color: var(--border-color);
+  margin: auto 0.5rem;
+  height: 24px;
+  border-radius: 2px;
+}

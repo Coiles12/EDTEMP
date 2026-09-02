@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>EDTEMP — Partage d'Emplois du Temps & Disponibilités</title>
-  <link rel="stylesheet" href="css/style.css?v=3.9" />
+  <link rel="stylesheet" href="css/style.css?v=3.10" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,10 +20,10 @@
 <body>
   <!-- Header Minimaliste (Mobile & PC) -->
   <header class="app-header">
-    <div class="header-brand">
+    <button class="header-brand btn btn-outline" onclick="location.reload()" style="border: none; background: var(--bg-muted); display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.75rem; border-radius: var(--radius-md);">
       <span class="brand-icon">📅</span>
-      <h1 class="brand-title" onclick="location.reload()" style="cursor:pointer;">EDTEMP</h1>
-    </div>
+      <h1 class="brand-title" style="margin: 0;">EDTEMP</h1>
+    </button>
     
     <!-- Menu central PC uniquement -->
     <nav class="desktop-nav" id="desktopNav">
@@ -259,10 +259,10 @@
 
   <div class="toast-container" id="toastContainer"></div>
 
-  <script src="js/api.js?v=3.9"></script>
-  <script src="js/auth.js?v=3.9"></script>
-  <script src="js/calendar.js?v=3.9"></script>
-  <script src="js/groupCalendar.js?v=3.9"></script>
-  <script src="js/app.js?v=3.9"></script>
+  <script src="js/api.js?v=3.10"></script>
+  <script src="js/auth.js?v=3.10"></script>
+  <script src="js/calendar.js?v=3.10"></script>
+  <script src="js/groupCalendar.js?v=3.10"></script>
+  <script src="js/app.js?v=3.10"></script>
 </body>
 </html>
