@@ -93,7 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mise a jour du sous-titre mobile
     const mobileLabel = document.getElementById('currentMobileDayLabel');
     if (mobileLabel) {
-      const activeIdx = window.edtempMobileActiveDayIndex || 0;
+      if (typeof window.edtempMobileActiveDayIndex === 'undefined') {
+        window.edtempMobileActiveDayIndex = (new Date().getDay() + 6) % 7;
+      }
+      const activeIdx = window.edtempMobileActiveDayIndex;
       const activeDate = new Date(monday);
       activeDate.setDate(monday.getDate() + activeIdx);
       const DAYS_FR = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];

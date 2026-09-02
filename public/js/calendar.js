@@ -385,7 +385,7 @@ const MyCalendar = {
           `;
         }
 
-        el.addEventListener('click', () => this.openEventDetails(ev));
+        el.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); this.openEventDetails(ev); });
         layer.appendChild(el);
       });
     });

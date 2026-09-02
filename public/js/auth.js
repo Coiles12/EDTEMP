@@ -172,17 +172,28 @@ const Auth = {
     if (!container) return;
 
     if (currentUser) {
+      const letter = currentUser.username.charAt(0).toUpperCase();
       container.innerHTML = `
-        <div class="user-badge" title="Connecté en tant que ${currentUser.username}">
-          <span class="user-color-dot" style="background-color: ${currentUser.color || '#3B82F6'}"></span>
-          <span>${currentUser.username}</span>
-        </div>
+        <button class="member-avatar-btn" id="navProfileBtn" title="Réglages" style="flex-direction: row; width: auto; opacity: 1; padding: 0.3rem 0.6rem; gap: 0.5rem; background: var(--bg-muted); border-radius: 20px;">
+          <div class="member-avatar" style="width: 24px; height: 24px; font-size: 0.85rem; border: none; box-shadow: none; background-color: ${currentUser.color || '#3B82F6'}">${letter}</div>
+          <div class="member-name" style="font-size: 0.85rem;">${currentUser.username}</div>
+        </button>
       `;
+      // We bind the click here, but we must use setTimeout or requestAnimationFrame to ensure it's in the DOM
+      setTimeout(() => {
+        document.getElementById('navProfileBtn')?.addEventListener('click', (e) => {
+          e.preventDefault();
+          const settingsTab = document.querySelector('.nav-btn[data-tab="settings"]');
+          if (settingsTab) {
+            settingsTab.click();
+          }
+        });
+      }, 0);
     } else {
       container.innerHTML = `
         <button class="btn btn-primary btn-sm" id="navLoginBtn">Connexion</button>
       `;
-      document.getElementById('navLoginBtn')?.addEventListener('click', () => this.openModal());
+      document.getElementById('navLoginBtn')?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); this.openModal(); });
     }
     
     const settingsLogoutBtn = document.getElementById('settingsLogoutBtn');
