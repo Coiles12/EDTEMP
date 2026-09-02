@@ -95,8 +95,12 @@ const GroupCalendar = {
   updateMemberCheckboxes() {
     const container = document.getElementById('groupMembersList');
     if (!container) return;
-    container.querySelectorAll('input[type="checkbox"]').forEach((chk) => {
-      chk.checked = this.selectedUserIds.has(Number(chk.value));
+    container.querySelectorAll('.member-avatar-btn').forEach((btn) => {
+      if (this.selectedUserIds.has(Number(btn.dataset.id))) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
     });
   },
 
@@ -157,7 +161,7 @@ const GroupCalendar = {
 
     bodyHtml += `</div>`;
 
-    container.innerHTML = mobileNavHtml + headerHtml + bodyHtml;
+    container.innerHTML = headerHtml + bodyHtml;
 
     // Rendu des créneaux
     if (this.doodleMode) {

@@ -173,13 +173,7 @@ const MyCalendar = {
     const isMobileActive = (i) => i === activeIdx;
 
     // ── En-tête (colonnes des jours) ──
-    let mobileNavHtml = `
-      <div class="mobile-day-nav">
-        <button class="btn btn-outline" onclick="window.changeMobileDay(-1, 'myCalendar')">‹ Prec</button>
-        <span class="mobile-day-label">${DAYS_FR[activeIdx]} ${weekDays[activeIdx].getDate()}</span>
-        <button class="btn btn-outline" onclick="window.changeMobileDay(1, 'myCalendar')">Suiv ›</button>
-      </div>
-    `;
+    
 
     let headerHtml = `
       <div class="calendar-header-row">
@@ -225,7 +219,7 @@ const MyCalendar = {
     }
     bodyHtml += `</div>`;
 
-    container.innerHTML = mobileNavHtml + headerHtml + bodyHtml;
+    container.innerHTML = headerHtml + bodyHtml;
 
     
     this.renderEventsOnGrid(weekDays);

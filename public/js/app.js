@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   GroupCalendar.init();
 
   // 2. Gestion de la navigation par onglets
-  const navTabs = document.querySelectorAll('.tab-btn');
+  const navTabs = document.querySelectorAll('.nav-btn');
   const panes = document.querySelectorAll('.tab-pane');
   const toolbar = document.getElementById('calendarToolbar');
 
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const refreshBtn = document.getElementById('refreshBtn');
   const periodLabel = document.getElementById('currentPeriodLabel');
 
-  function updatePeriodLabel() {
+  window.updatePeriodLabel = function() {
     const { monday, sunday } = MyCalendar.getWeekRange();
 
     const startDay = monday.getDate();
@@ -88,6 +88,17 @@ document.addEventListener('DOMContentLoaded', () => {
       periodLabel.textContent = `Semaine du ${startDay} au ${endDay} ${endMonth} ${year}`;
     } else {
       periodLabel.textContent = `Semaine du ${startDay} ${startMonth} au ${endDay} ${endMonth} ${year}`;
+    }
+
+    // Mise a jour du sous-titre mobile
+    const mobileLabel = document.getElementById('currentMobileDayLabel');
+    if (mobileLabel) {
+      const activeIdx = window.edtempMobileActiveDayIndex || 0;
+      const activeDate = new Date(monday);
+      activeDate.setDate(monday.getDate() + activeIdx);
+      const DAYS_FR = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+      mobileLabel.textContent = `${DAYS_FR[activeIdx]} ${activeDate.getDate()}`;
+      mobileLabel.style.display = '';
     }
   }
 
@@ -277,6 +288,7 @@ window.changeMobileDay = function(direction, viewType) {
     window.edtempMobileActiveDayIndex = newIdx;
   }
   
+  if (window.updatePeriodLabel) window.updatePeriodLabel();
   if (viewType === 'myCalendar' && window.MyCalendar) {
     window.MyCalendar.render();
   } else if (viewType === 'groupCalendar' && window.GroupCalendar) {
