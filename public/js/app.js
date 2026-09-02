@@ -110,8 +110,32 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshActiveView();
   }
 
-  prevBtn?.addEventListener('click', () => changeWeek(-7));
-  nextBtn?.addEventListener('click', () => changeWeek(7));
+  function navigateGlobal(direction) {
+    if (window.innerWidth < 768) {
+      // Mobile: Jour par jour
+      let newIdx = (window.edtempMobileActiveDayIndex !== undefined ? window.edtempMobileActiveDayIndex : (new Date().getDay() + 6) % 7) + direction;
+      if (newIdx < 0) {
+        window.edtempMobileActiveDayIndex = 6;
+        changeWeek(-7);
+      } else if (newIdx > 6) {
+        window.edtempMobileActiveDayIndex = 0;
+        changeWeek(7);
+      } else {
+        window.edtempMobileActiveDayIndex = newIdx;
+        if (window.updatePeriodLabel) window.updatePeriodLabel();
+        refreshActiveView();
+      }
+    } else {
+      // PC: Semaine par semaine
+      changeWeek(direction === 1 ? 7 : -7);
+    }
+  }
+
+  prevBtn?.addEventListener('click', () => navigateGlobal(-1));
+  nextBtn?.addEventListener('click', () => navigateGlobal(1));
+
+  window.navigateGlobal = navigateGlobal; // Expose to window for touch events
+
   todayBtn?.addEventListener('click', () => {
     MyCalendar.currentDate = new Date();
     updatePeriodLabel();
@@ -273,25 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // NAVIGATION MOBILE (Swipe & Boutons)
 // ==========================================
 window.changeMobileDay = function(direction, viewType) {
-  if (typeof window.edtempMobileActiveDayIndex === 'undefined') return;
-  
-  let newIdx = window.edtempMobileActiveDayIndex + direction;
-  
-  // Si on dépasse la semaine, on change de semaine
-  if (newIdx < 0) {
-    document.getElementById('prevWeekBtn').click();
-    window.edtempMobileActiveDayIndex = 6;
-  } else if (newIdx > 6) {
-    document.getElementById('nextWeekBtn').click();
-    window.edtempMobileActiveDayIndex = 0;
-  } else {
-    window.edtempMobileActiveDayIndex = newIdx;
-  }
-  
-  if (window.updatePeriodLabel) window.updatePeriodLabel();
-  if (viewType === 'myCalendar' && window.MyCalendar) {
-    window.MyCalendar.render();
-  } else if (viewType === 'groupCalendar' && window.GroupCalendar) {
-    window.GroupCalendar.render();
+  if (window.navigateGlobal) {
+    window.navigateGlobal(direction);
   }
 };
