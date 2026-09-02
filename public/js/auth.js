@@ -177,44 +177,23 @@ const Auth = {
           <span class="user-color-dot" style="background-color: ${currentUser.color || '#3B82F6'}"></span>
           <span>${currentUser.username}</span>
         </div>
-        <button class="btn btn-outline" id="logoutBtn" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
-          Déconnexion
-        </button>
       `;
-
-      document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    } else {
+      container.innerHTML = `
+        <button class="btn btn-primary btn-sm" id="navLoginBtn">Connexion</button>
+      `;
+      document.getElementById('navLoginBtn')?.addEventListener('click', () => this.openModal());
+    }
+    
+    const settingsLogoutBtn = document.getElementById('settingsLogoutBtn');
+    if (settingsLogoutBtn && !settingsLogoutBtn.dataset.bound) {
+      settingsLogoutBtn.dataset.bound = "true";
+      settingsLogoutBtn.addEventListener('click', () => {
         API.clearToken();
         currentUser = null;
         Auth.renderUserBadge();
         showToast('Vous êtes déconnecté.', 'info');
         window.dispatchEvent(new CustomEvent('auth:logout'));
-        Auth.openModal();
-      });
-
-      // Mettre à jour l'affichage de la couleur sélectionnée dans les paramètres
-      const profilePaletteEl = document.getElementById('colorPalette');
-      if (profilePaletteEl) {
-        profilePaletteEl.querySelectorAll('.color-option').forEach(el => {
-          el.classList.toggle('selected', el.dataset.color.toLowerCase() === (currentUser.color || '').toLowerCase());
-        });
-      }
-
-      // Pré-remplir l'URL ICS dans les paramètres
-      const icsInput = document.getElementById('icsUrlInput');
-      if (icsInput && currentUser.ics_url) {
-        icsInput.value = currentUser.ics_url;
-      }
-
-      // Afficher le statut de synchro
-      this.updateSyncStatusDisplay(currentUser);
-    } else {
-      container.innerHTML = `
-        <button class="btn btn-primary" id="openAuthModalBtn">
-          Se connecter
-        </button>
-      `;
-
-      document.getElementById('openAuthModalBtn')?.addEventListener('click', () => {
         Auth.openModal();
       });
     }

@@ -69,23 +69,24 @@ const GroupCalendar = {
 
     container.innerHTML = this.groupData.map((member) => {
       const isChecked = this.selectedUserIds.has(member.userId);
+      const letter = member.username.charAt(0).toUpperCase();
       return `
-        <label class="member-checkbox-item" data-id="${member.userId}">
-          <input type="checkbox" value="${member.userId}" ${isChecked ? 'checked' : ''} />
-          <span class="member-color-indicator" style="background-color: ${member.color || '#3B82F6'}"></span>
-          <span class="member-name" title="${this.escapeHtml(member.username)}">${this.escapeHtml(member.username)}</span>
-        </label>
+        <button class="member-avatar-btn ${isChecked ? 'active' : ''}" data-id="${member.userId}">
+          <div class="member-avatar" style="background-color: ${member.color || '#3B82F6'}">${letter}</div>
+          <div class="member-name" title="${this.escapeHtml(member.username)}">${this.escapeHtml(member.username)}</div>
+        </button>
       `;
     }).join('');
 
-    // Gestion du changement individuel de case à cocher
-    container.querySelectorAll('input[type="checkbox"]').forEach((chk) => {
-      chk.addEventListener('change', (e) => {
-        const uid = Number(e.target.value);
-        if (e.target.checked) {
-          this.selectedUserIds.add(uid);
-        } else {
+    container.querySelectorAll('.member-avatar-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const uid = Number(btn.dataset.id);
+        if (this.selectedUserIds.has(uid)) {
           this.selectedUserIds.delete(uid);
+          btn.classList.remove('active');
+        } else {
+          this.selectedUserIds.add(uid);
+          btn.classList.add('active');
         }
         this.render();
       });
@@ -110,6 +111,13 @@ const GroupCalendar = {
 
     const { monday } = MyCalendar.getWeekRange();
     const now = new Date();
+
+    // -- Navigation Mobile --
+    if (typeof window.edtempMobileActiveDayIndex === 'undefined') {
+      window.edtempMobileActiveDayIndex = (now.getDay() + 6) % 7;
+    }
+    const isMobileActive = (i) => i === window.edtempMobileActiveDayIndex;
+
 
     // En-têtes des jours
     let headerHtml = `
