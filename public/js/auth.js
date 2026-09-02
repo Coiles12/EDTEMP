@@ -30,13 +30,13 @@ const Auth = {
     const regPaletteEl = document.getElementById('registerColorPalette');
     if (regPaletteEl) {
       regPaletteEl.innerHTML = PALETTE.map((c, i) => `
-        <div class="color-option ${i === 0 ? 'selected' : ''}" style="background-color: ${c}" data-color="${c}"></div>
+        <div class="color-dot ${i === 0 ? 'selected' : ''}" style="background-color: ${c}" data-color="${c}"></div>
       `).join('');
 
       regPaletteEl.addEventListener('click', (e) => {
-        const option = e.target.closest('.color-option');
+        const option = e.target.closest('.color-dot');
         if (!option) return;
-        regPaletteEl.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+        regPaletteEl.querySelectorAll('.color-dot').forEach(el => el.classList.remove('selected'));
         option.classList.add('selected');
         selectedRegColor = option.dataset.color;
       });
@@ -46,13 +46,13 @@ const Auth = {
     const profilePaletteEl = document.getElementById('colorPalette');
     if (profilePaletteEl) {
       profilePaletteEl.innerHTML = PALETTE.map((c) => `
-        <div class="color-option" style="background-color: ${c}" data-color="${c}"></div>
+        <div class="color-dot" style="background-color: ${c}" data-color="${c}"></div>
       `).join('');
 
       profilePaletteEl.addEventListener('click', async (e) => {
-        const option = e.target.closest('.color-option');
+        const option = e.target.closest('.color-dot');
         if (!option) return;
-        profilePaletteEl.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+        profilePaletteEl.querySelectorAll('.color-dot').forEach(el => el.classList.remove('selected'));
         option.classList.add('selected');
         const newColor = option.dataset.color;
 

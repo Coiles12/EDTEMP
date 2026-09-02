@@ -621,6 +621,7 @@ body {
   gap: 1rem;
 }
 .setting-card {
+  align-items: center;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -926,6 +927,7 @@ body {
     flex-wrap: wrap;
   }
   .setting-card {
+  align-items: center;
     flex: 1;
     min-width: 300px;
   }
