@@ -164,11 +164,12 @@ const MyCalendar = {
     const now = new Date();
 
     
+
     // -- Navigation Mobile --
     if (typeof window.edtempMobileActiveDayIndex === 'undefined') {
-      window.edtempMobileActiveDayIndex = weekDays.findIndex(d => d.toDateString() === now.toDateString());
-      if (window.edtempMobileActiveDayIndex === -1) window.edtempMobileActiveDayIndex = 0;
+      window.edtempMobileActiveDayIndex = (now.getDay() + 6) % 7; // Lundi=0, Dimanche=6
     }
+
     const activeIdx = window.edtempMobileActiveDayIndex;
     const isMobileActive = (i) => i === activeIdx;
 
