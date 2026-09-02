@@ -257,3 +257,29 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialisation de la vue
   updatePeriodLabel();
 });
+
+// ==========================================
+// NAVIGATION MOBILE (Swipe & Boutons)
+// ==========================================
+window.changeMobileDay = function(direction, viewType) {
+  if (typeof window.edtempMobileActiveDayIndex === 'undefined') return;
+  
+  let newIdx = window.edtempMobileActiveDayIndex + direction;
+  
+  // Si on dépasse la semaine, on change de semaine
+  if (newIdx < 0) {
+    document.getElementById('prevWeekBtn').click();
+    window.edtempMobileActiveDayIndex = 6;
+  } else if (newIdx > 6) {
+    document.getElementById('nextWeekBtn').click();
+    window.edtempMobileActiveDayIndex = 0;
+  } else {
+    window.edtempMobileActiveDayIndex = newIdx;
+  }
+  
+  if (viewType === 'myCalendar' && window.MyCalendar) {
+    window.MyCalendar.render();
+  } else if (viewType === 'groupCalendar' && window.GroupCalendar) {
+    window.GroupCalendar.render();
+  }
+};

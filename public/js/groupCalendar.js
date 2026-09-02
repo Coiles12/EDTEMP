@@ -121,7 +121,7 @@ const GroupCalendar = {
 
       const isToday = dayDate.toDateString() === now.toDateString();
       headerHtml += `
-        <div class="calendar-header-cell ${isToday ? 'today' : ''}">
+        <div class="calendar-header-cell ${isToday ? 'today' : ''} ${isMobileActive(i) ? 'mobile-active-day' : ''}">
           <div class="day-name">${DAYS_FR[i]}</div>
           <div class="day-date">${dayDate.getDate()}</div>
         </div>
@@ -146,7 +146,7 @@ const GroupCalendar = {
       const isToday = dayDate.toDateString() === now.toDateString();
 
       bodyHtml += `
-        <div class="day-column ${isToday ? 'today' : ''}" data-day-index="${i}">
+        <div class="day-column ${isToday ? 'today' : ''} ${isMobileActive(i) ? 'mobile-active-day' : ''}" data-day-index="${i}">
           <div class="day-grid-lines">
             ${Array.from({ length: TOTAL_HOURS }).map(() => '<div class="grid-line-hour"></div>').join('')}
           </div>
@@ -157,7 +157,7 @@ const GroupCalendar = {
 
     bodyHtml += `</div>`;
 
-    container.innerHTML = headerHtml + bodyHtml;
+    container.innerHTML = mobileNavHtml + headerHtml + bodyHtml;
 
     // Rendu des créneaux
     if (this.doodleMode) {

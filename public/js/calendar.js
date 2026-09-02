@@ -163,11 +163,29 @@ const MyCalendar = {
     const { monday } = this.getWeekRange();
     const now = new Date();
 
+    
+    // -- Navigation Mobile --
+    if (typeof window.edtempMobileActiveDayIndex === 'undefined') {
+      window.edtempMobileActiveDayIndex = weekDays.findIndex(d => d.toDateString() === now.toDateString());
+      if (window.edtempMobileActiveDayIndex === -1) window.edtempMobileActiveDayIndex = 0;
+    }
+    const activeIdx = window.edtempMobileActiveDayIndex;
+    const isMobileActive = (i) => i === activeIdx;
+
     // ── En-tête (colonnes des jours) ──
+    let mobileNavHtml = `
+      <div class="mobile-day-nav">
+        <button class="btn btn-outline" onclick="window.changeMobileDay(-1, 'myCalendar')">‹ Prec</button>
+        <span class="mobile-day-label">${DAYS_FR[activeIdx]} ${weekDays[activeIdx].getDate()}</span>
+        <button class="btn btn-outline" onclick="window.changeMobileDay(1, 'myCalendar')">Suiv ›</button>
+      </div>
+    `;
+
     let headerHtml = `
       <div class="calendar-header-row">
         <div class="calendar-header-cell" style="font-weight:600; color:var(--text-muted);">Heure</div>
     `;
+
 
     const weekDays = [];
     for (let i = 0; i < 7; i++) {
@@ -177,7 +195,7 @@ const MyCalendar = {
 
       const isToday = dayDate.toDateString() === now.toDateString();
       headerHtml += `
-        <div class="calendar-header-cell ${isToday ? 'today' : ''}">
+        <div class="calendar-header-cell ${isToday ? 'today' : ''} ${isMobileActive(i) ? 'mobile-active-day' : ''}">
           <div class="day-name">${DAYS_FR[i]}</div>
           <div class="day-date">${dayDate.getDate()}</div>
         </div>
@@ -197,7 +215,7 @@ const MyCalendar = {
     for (let i = 0; i < 7; i++) {
       const isToday = weekDays[i].toDateString() === now.toDateString();
       bodyHtml += `
-        <div class="day-column ${isToday ? 'today' : ''}" data-day-index="${i}">
+        <div class="day-column ${isToday ? 'today' : ''} ${isMobileActive(i) ? 'mobile-active-day' : ''}" data-day-index="${i}">
           <div class="day-grid-lines">
             ${Array.from({ length: TOTAL_HOURS }).map(() => '<div class="grid-line-hour"></div>').join('')}
           </div>
@@ -207,11 +225,23 @@ const MyCalendar = {
     }
     bodyHtml += `</div>`;
 
-    container.innerHTML = headerHtml + bodyHtml;
+    container.innerHTML = mobileNavHtml + headerHtml + bodyHtml;
 
+    
     this.renderEventsOnGrid(weekDays);
     this.renderNowLine(weekDays);
     this.startNowLineTimer(weekDays);
+
+    // Swipe events
+    let touchstartX = 0;
+    let touchendX = 0;
+    container.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; }, {passive: true});
+    container.addEventListener('touchend', e => {
+      touchendX = e.changedTouches[0].screenX;
+      if (touchendX < touchstartX - 50) window.changeMobileDay(1, 'myCalendar');
+      if (touchendX > touchstartX + 50) window.changeMobileDay(-1, 'myCalendar');
+    }, {passive: true});
+
   },
 
   /* ── Ligne de l'heure actuelle ── */

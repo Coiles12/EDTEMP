@@ -1327,6 +1327,88 @@ body {
   padding: 1.5rem;
 }
 
+
+/* =========================================================
+   VUE CALENDRIER MOBILE (Vue 1 Jour)
+   ========================================================= */
+.mobile-day-nav {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.mobile-day-nav button {
+  min-width: 44px;
+}
+.mobile-day-label {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-main);
+  text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+  /* Grille 1 seule colonne (Heure + 1 Jour actif) */
+  .calendar-container {
+    min-width: 0;
+    overflow-x: hidden; 
+  }
+  .calendar-header-row,
+  .calendar-body {
+    grid-template-columns: 50px 1fr !important;
+    min-width: 0 !important;
+  }
+  
+  /* Masquer tous les jours sauf le mobile-active-day */
+  .calendar-header-cell:not(:first-child) {
+    display: none;
+  }
+  .calendar-header-cell.mobile-active-day {
+    display: block;
+  }
+  
+  .day-column {
+    display: none;
+  }
+  .day-column.mobile-active-day {
+    display: block;
+  }
+  
+  /* Afficher la nav mobile */
+  .mobile-day-nav {
+    display: flex;
+  }
+  
+  /* Agrandi inputs for touch */
+  input[type="text"], input[type="password"], input[type="url"] {
+    min-height: 48px;
+    font-size: 16px;
+  }
+  
+  .btn {
+    min-height: 44px;
+  }
+  
+  /* Page connexion centrage parfait */
+  .modal {
+    margin: auto !important; /* Centrage vertical Flex/Grid natif sur dialog top-layer */
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 400px !important;
+  }
+  .modal-card {
+    border-radius: var(--radius-md) !important;
+  }
+  
+  /* Empêche le débordement et le scroll horizontal au niveau du body */
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+}
+
 /* =========================================================
    RESPONSIVE (PC / Tablette / Téléphone)
    ========================================================= */
